@@ -1,11 +1,11 @@
 #                                               -*- Autoconf -*-
 # Process this file with autoconf to produce a configure script.
 
-AC_PREREQ(2.59)
-AC_INIT(zcmdsh, 0.0.1, yasu1976@gmail.com)
-AC_CONFIG_SRCDIR([apps/zcmdsh.c])
+AC_PREREQ([2.71])
+AC_INIT([zcmdsh],[0.0.1],[yasu1976@gmail.com])
+AC_CONFIG_SRCDIR([app/zcmdsh.c])
 AM_INIT_AUTOMAKE
-AM_CONFIG_HEADER([config.h])
+AC_CONFIG_HEADERS([config.h])
 
 dnl ------------
 dnl Check CFLAGS
@@ -29,14 +29,15 @@ AC_PROG_RANLIB
 # Checks for libraries.
 AC_CHECK_LIB(m, main)
 
-# Checks for header files.
-AC_HEADER_STDC
+AC_CHECK_INCLUDES_DEFAULT
+AC_PROG_EGREP
+
 AC_HEADER_SYS_WAIT
 AC_CHECK_HEADERS([fcntl.h netdb.h netinet/in.h stdlib.h string.h sys/param.h sys/socket.h sys/time.h syslog.h termios.h unistd.h])
 
 # Checks for typedefs, structures, and compiler characteristics.
 AC_C_CONST
-AC_HEADER_TIME
+AC_CHECK_HEADERS_ONCE([sys/time.h])
 AC_STRUCT_TM
 
 # Checks for library functions.
