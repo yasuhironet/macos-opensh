@@ -12,9 +12,19 @@ DEFINE_COMMAND(chdir,
                "change current working directory.\n"
                "filename\n")
 {
+  int ret = 0;
   struct shell *shell = (struct shell *) context;
   fprintf (shell->terminal, "chdir: %s\n", argv[1]);
-  chdir (argv[1]);
+  ret = chdir (argv[1]);
+  if (ret)
+    fprintf (shell->terminal, "chdir failed: %s\n", strerror (errno));
+
+  char buf[MAXPATHLEN];
+  getcwd (buf, sizeof (buf));
+
+  char prompt[MAXPATHLEN * 2];
+  snprintf (prompt, sizeof (prompt), "[%s]> ", buf);
+  shell_set_prompt (shell, prompt);
 }
 
 DEFINE_COMMAND(pwd,
