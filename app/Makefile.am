@@ -2,14 +2,14 @@
 
 AM_CPPFLAGS = -I$(top_srcdir) -I$(top_srcdir)/lib
 
-noinst_PROGRAMS = zcmdsh
+noinst_PROGRAMS = opensh
 
-zcmdsh_SOURCES = \
-	zcmdsh.c
+opensh_SOURCES = \
+	opensh.c
 
 noinst_HEADERS = \
-	zcmdsh.h
+	opensh.h
 
-zcmdsh_LDADD = \
+opensh_LDADD = \
 	$(top_srcdir)/lib/libzcmdsh.a
 

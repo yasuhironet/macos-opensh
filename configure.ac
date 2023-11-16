@@ -3,7 +3,7 @@
 
 AC_PREREQ([2.71])
 AC_INIT([zcmdsh],[0.0.1],[yasu1976@gmail.com])
-AC_CONFIG_SRCDIR([app/zcmdsh.c])
+AC_CONFIG_SRCDIR([lib/command_shell.c])
 AM_INIT_AUTOMAKE
 AC_CONFIG_HEADERS([config.h])
 

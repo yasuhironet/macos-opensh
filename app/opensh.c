@@ -7,6 +7,18 @@
 #include "shell.h"
 #include "command_shell.h"
 
+void
+shell_set_prompt_cwd (struct shell *shell)
+{
+  char buf[MAXPATHLEN];
+  getcwd (buf, sizeof (buf));
+
+  char prompt[MAXPATHLEN * 2];
+  snprintf (prompt, sizeof (prompt), "[%s]> ", buf);
+
+  shell_set_prompt (shell, prompt);
+}
+
 DEFINE_COMMAND(chdir,
                "cd <FILENAME>",
                "change current working directory.\n"
@@ -19,12 +31,7 @@ DEFINE_COMMAND(chdir,
   if (ret)
     fprintf (shell->terminal, "chdir failed: %s\n", strerror (errno));
 
-  char buf[MAXPATHLEN];
-  getcwd (buf, sizeof (buf));
-
-  char prompt[MAXPATHLEN * 2];
-  snprintf (prompt, sizeof (prompt), "[%s]> ", buf);
-  shell_set_prompt (shell, prompt);
+  shell_set_prompt_cwd (shell);
 }
 
 DEFINE_COMMAND(pwd,
@@ -37,20 +44,45 @@ DEFINE_COMMAND(pwd,
   fprintf (shell->terminal, "cwd: %s\n", buf);
 }
 
+DEFINE_COMMAND(list,
+               "ls",
+               "list files in the current working directory.\n")
+{
+  struct shell *shell = (struct shell *) context;
+  char buf[MAXPATHLEN], dir[MAXPATHLEN];
+  getcwd (buf, sizeof (buf));
+  snprintf (dir, sizeof (dir), "%s/", buf);
+  fprintf (shell->terminal, "dir: %s\n", dir);
+  file_ls_candidate (shell->terminal, dir);
+}
+
+DEFINE_COMMAND(open,
+               "open <FILENAME>",
+               "open.\n"
+               "filename\n")
+{
+  struct shell *shell = (struct shell *) context;
+  char command[512];
+
+  snprintf (command, sizeof (command), "open %s", argv[1]);
+  system (command);
+}
+
 int
 main (int argc, char **argv)
 {
-  char *prompt = "test prompt> ";
   struct shell *shell;
 
   command_shell_init ();
 
   shell = command_shell_create ();
-  shell_set_prompt (shell, prompt);
+  shell_set_prompt_cwd (shell);
   shell_set_terminal (shell, 0, 1);
 
   INSTALL_COMMAND (shell->cmdset, chdir);
   INSTALL_COMMAND (shell->cmdset, pwd);
+  INSTALL_COMMAND (shell->cmdset, list);
+  INSTALL_COMMAND (shell->cmdset, open);
 
   termio_init ();
 
