@@ -7,6 +7,8 @@
 #include "shell.h"
 #include "command_shell.h"
 
+#include "shell_fselect.h"
+
 void
 shell_set_prompt_cwd (struct shell *shell)
 {
@@ -115,7 +117,10 @@ main (int argc, char **argv)
   INSTALL_COMMAND (shell->cmdset, list_dir);
   INSTALL_COMMAND (shell->cmdset, open);
 
+  shell_install (shell, '>', fselect_keyfunc_start);
+
   termio_init ();
+  shell_fselect_init ();
 
   shell_clear (shell);
   shell_prompt (shell);
