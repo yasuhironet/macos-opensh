@@ -93,9 +93,17 @@ DEFINE_COMMAND(open,
                "filename\n")
 {
   struct shell *shell = (struct shell *) context;
-  char command[512];
+  char command[1024];
+  char *filename;
 
-  snprintf (command, sizeof (command), "open %s", argv[1]);
+  filename = strstr (shell->command_line, argv[1]);
+  if (! filename)
+    {
+      fprintf (shell->terminal, "something went wrong.\n");
+      return;
+    }
+
+  snprintf (command, sizeof (command), "open \"%s\"", filename);
   system (command);
 }
 
