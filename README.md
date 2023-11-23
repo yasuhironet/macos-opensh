@@ -47,5 +47,36 @@ key_func: 0x104e3c190, key_func[62]: 0x104e369d4
 
   simrouting/                  libzcmdsh/                   
   テストディレクトリ/ 
+shell_input: inputch: 10/012/0xa CONTROL('J')
+key_func: 0x104e3d3a8, key_func[10]: 0x104e36de0
+[/Users/yasu/devel]> open テストディレクトリ/'?'
+shell_input: inputch: 63/077/0x3f '?'
+key_func: 0x104e3c190, key_func[63]: 0x104e35a34
+[/Users/yasu/devel]> open テストディレクトリ/
+  <FILENAME>       filename
+  path: テストディレクトリ/ dir: テストディレクトリ filename: 
+  maxlen: 56 ncol: 1
+
+  ランダム 空白入り日本語ファイル名.pdf  
+
+[/Users/yasu/devel]> open テストディレクトリ/'>'
+shell_input: inputch: 62/076/0x3e '>'
+key_func: 0x104e3c190, key_func[62]: 0x104e369d4
+[/Users/yasu/devel]> open テストディレクトリ/debug...
+  path: テストディレクトリ dir: テストディレクトリ filename: 
+
+  path: テストディレクトリ dir: テストディレクトリ filename: 
+  maxlen: 56 ncol: 1 nentry: 1 index: 0
+
+  ランダム 空白入り日本語ファイル名.pdf
+
+
+shell_input: inputch: 10/012/0xa CONTROL('J')
+key_func: 0x104e3d3a8, key_func[10]: 0x104e36de0
+[/Users/yasu/devel]> open テストディレクトリ/ランダム 空白入り日本語ファイル名.pdf
+shell_input: inputch: 10/012/0xa CONTROL('J')
+key_func: 0x104e3c190, key_func[10]: 0x104e35820
+[/Users/yasu/devel]> open テストディレクトリ/ランダム 空白入り日本語ファイル名.pdf
+[/Users/yasu/devel]> 
 ```
 
