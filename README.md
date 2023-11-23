@@ -80,3 +80,20 @@ key_func: 0x104e3c190, key_func[10]: 0x104e35820
 [/Users/yasu/devel]> 
 ```
 
+## Known Issues
+
+- Removing the UTF-8 filename backward from the end does not work yet.
+  (The shell removes it one-byte at a time in (e.g.,) UTF-8 four encoded bytes.
+- The spaces in directory name is not handled correctly.
+- The more-than-one spaces in file name is not handled correctly.
+  (It is canonicalized as just one space in the command matching process.)
+
+## TODO
+
+- prepare the GPL license.
+- implement debug shell mode. All noisy debug message should only be
+  output when the debug shell mode is enabled.
+- multi-define of commands: "cd (|<FILENAME>)".
+- multi-match in command match process.
+
+
