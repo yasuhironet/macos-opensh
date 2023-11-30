@@ -6,9 +6,10 @@
 
 #include "termio.h"
 #include "vector.h"
-#include "command.h"
 #include "shell.h"
+#include "command.h"
 #include "command_shell.h"
+#include "debug_cmd.h"
 
 #include "shell_fselect.h"
 
@@ -114,6 +115,8 @@ int
 main (int argc, char **argv)
 {
   struct shell *shell;
+
+  debug_cmd_init ();
 
   command_shell_init ();
 
