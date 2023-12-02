@@ -57,6 +57,33 @@ DEFINE_COMMAND(chdir_home,
   shell_set_prompt_cwd (shell);
 }
 
+DEFINE_COMMAND(chdir2,
+               "chdir2 (|<FILENAME>)",
+               "change current working directory.\n"
+               "filename\n")
+{
+  int ret = 0;
+  struct shell *shell = (struct shell *) context;
+  char *target;
+
+  if (argc > 1)
+    {
+      target = argv[1];
+      fprintf (shell->terminal, "chdir: %s\n", target);
+    }
+  else
+    {
+      target = getenv ("HOME");
+      fprintf (shell->terminal, "chdir: home: %s\n", target);
+    }
+
+  ret = chdir (target);
+  if (ret)
+    fprintf (shell->terminal, "chdir failed: %s\n", strerror (errno));
+
+  shell_set_prompt_cwd (shell);
+}
+
 DEFINE_COMMAND(pwd,
                "pwd",
                "print current working directory.\n")
@@ -87,6 +114,22 @@ DEFINE_COMMAND(list_dir,
   struct shell *shell = (struct shell *) context;
   char dir[MAXPATHLEN];
   snprintf (dir, sizeof (dir), "%s/", argv[1]);
+  fprintf (shell->terminal, "dir: %s\n", dir);
+  file_ls_candidate (shell->terminal, dir);
+}
+
+DEFINE_COMMAND(list2,
+               "list2 (|<FILENAME>)",
+               "list files in the directory.\n"
+               "directory name\n")
+{
+  struct shell *shell = (struct shell *) context;
+  char buf[MAXPATHLEN], dir[MAXPATHLEN];
+  if (argc > 1)
+    snprintf (buf, sizeof (buf), "%s", argv[1]);
+  else
+    getcwd (buf, sizeof (buf));
+  snprintf (dir, sizeof (dir), "%s/", buf);
   fprintf (shell->terminal, "dir: %s\n", dir);
   file_ls_candidate (shell->terminal, dir);
 }
@@ -126,10 +169,17 @@ main (int argc, char **argv)
 
   INSTALL_COMMAND (shell->cmdset, chdir);
   INSTALL_COMMAND (shell->cmdset, chdir_home);
-  INSTALL_COMMAND (shell->cmdset, pwd);
+  INSTALL_COMMAND2 (shell->cmdset, chdir2);
+
   INSTALL_COMMAND (shell->cmdset, list);
   INSTALL_COMMAND (shell->cmdset, list_dir);
+  INSTALL_COMMAND2 (shell->cmdset, list2);
+
+  INSTALL_COMMAND (shell->cmdset, pwd);
   INSTALL_COMMAND (shell->cmdset, open);
+
+  INSTALL_COMMAND2 (shell->cmdset, debug);
+  INSTALL_COMMAND2 (shell->cmdset, show_debug);
 
   shell_install (shell, '>', fselect_keyfunc_start);
 
