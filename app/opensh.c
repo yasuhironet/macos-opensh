@@ -142,6 +142,32 @@ DEFINE_COMMAND (launch_shell,
   termio_start ();
 }
 
+DEFINE_COMMAND (edit_vi,
+               "(vi|vim) <FILENAME>",
+               "edit a file with vi.\n"
+               "edit a file with vim.\n"
+               "filename\n")
+{
+  struct shell *shell = (struct shell *) context;
+  char command[1024];
+  char *filename;
+
+  filename = strstr (shell->command_line, argv[1]);
+  if (! filename)
+    {
+      fprintf (shell->terminal, "something went wrong.\n");
+      return;
+    }
+
+  snprintf (command, sizeof (command), "%s \"%s\"", argv[0], filename);
+
+  termio_reset ();
+  fprintf (shell->terminal, "system: %s\n", command);
+  system (command);
+  fprintf (shell->terminal, "system: done: %s\n", command);
+  termio_start ();
+}
+
 int
 main (int argc, char **argv)
 {
@@ -165,6 +191,7 @@ main (int argc, char **argv)
   INSTALL_COMMAND (shell->cmdset, open);
   INSTALL_COMMAND2 (shell->cmdset, terminal);
   INSTALL_COMMAND2 (shell->cmdset, launch_shell);
+  INSTALL_COMMAND2 (shell->cmdset, edit_vi);
 
   shell_install (shell, '>', fselect_keyfunc_start);
 
