@@ -1,17 +1,18 @@
-# libzcmdsh
+# zcmdsh
 
 ## Overview
 
-A GPL library for GNU Zebra/Quagga/FRR-like command-line shell.
-It comes with the "opensh": It is provided as the first example application.
+A GNU-Zebra/Quagga/FRR-like command-line shell library.
+It comes with the "opensh" as the first example application.
 The "opensh" is a Cisco-like shell for "open"-ing files and directories
-in MacOS. It especially shows a powerful ability when the name of the
+in MacOS. It shows a powerful ability when the name of the
 file or directory is in the multi-byte language, e.g.,
-the Jananese UTF-8 filename.
+the Jananese UTF-8 filenames.
 
 '?' provides a list of command candidates.
-When in the <FILENAME> command node, '?' provides a list of
-file candidates. 'TAB' will complete the command argument
+When your shell is in the <FILENAME> command node,
+'?' provides a list of file candidates.
+'TAB' will complete the command argument
 as long as it is common among the candidates.
 
 If you type '>' in the <FILENAME> command node, the shell enters
@@ -93,7 +94,6 @@ key_func: 0x104e3c190, key_func[10]: 0x104e35820
 - prepare the GPL license.
 - implement debug shell mode. All noisy debug message should only be
   output when the debug shell mode is enabled.
-- multi-define of commands: "cd (|<FILENAME>)".
 - multi-match in command match process.
 
 
