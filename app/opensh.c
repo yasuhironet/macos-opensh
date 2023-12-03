@@ -25,7 +25,7 @@ shell_set_prompt_cwd (struct shell *shell)
   shell_set_prompt (shell, prompt);
 }
 
-DEFINE_COMMAND(chdir,
+DEFINE_COMMAND (chdir,
                "(cd|chdir) (|<FILENAME>)",
                "change current working directory.\n"
                "change current working directory.\n"
@@ -53,7 +53,7 @@ DEFINE_COMMAND(chdir,
   shell_set_prompt_cwd (shell);
 }
 
-DEFINE_COMMAND(pwd,
+DEFINE_COMMAND (pwd,
                "pwd",
                "print current working directory.\n")
 {
@@ -63,7 +63,7 @@ DEFINE_COMMAND(pwd,
   fprintf (shell->terminal, "cwd: %s\n", buf);
 }
 
-DEFINE_COMMAND(list,
+DEFINE_COMMAND (list,
                "(ls|list) (|<FILENAME>)",
                "list files in the directory.\n"
                "list files in the directory.\n"
@@ -80,7 +80,7 @@ DEFINE_COMMAND(list,
   file_ls_candidate (shell->terminal, dir);
 }
 
-DEFINE_COMMAND(open,
+DEFINE_COMMAND (open,
                "open <FILENAME>",
                "open.\n"
                "filename\n")
@@ -100,6 +100,48 @@ DEFINE_COMMAND(open,
   system (command);
 }
 
+DEFINE_COMMAND (terminal,
+               "terminal",
+               "open a new terminal window.\n")
+{
+  struct shell *shell = (struct shell *) context;
+  char command[1024];
+
+  snprintf (command, sizeof (command),
+            "osascript -e \"tell app \\\"Terminal\\\""
+            " to do script \\\"cd $PWD\\\"\"");
+  fprintf (shell->terminal, "system: %s\n", command);
+  system (command);
+}
+
+DEFINE_COMMAND (launch_shell,
+               "launch shell (|sh|bash|csh|dash|ksh|tcsh|zsh)",
+               "launch a command.\n"
+               "launch a shell.\n"
+               "launch a system shell: check /private/var/select/sh.\n"
+               "launch a bash shell.\n"
+               "launch a csh shell.\n"
+               "launch a dash shell.\n"
+               "launch a ksh shell.\n"
+               "launch a tcsh shell.\n"
+               "launch a zsh shell.\n"
+               )
+{
+  struct shell *shell = (struct shell *) context;
+  char command[1024];
+
+  if (argc > 2)
+    snprintf (command, sizeof (command), "%s", argv[2]);
+  else
+    snprintf (command, sizeof (command), "%s", getenv ("SHELL"));
+
+  termio_reset ();
+  fprintf (shell->terminal, "system: %s\n", command);
+  system (command);
+  fprintf (shell->terminal, "system: done: %s\n", command);
+  termio_start ();
+}
+
 int
 main (int argc, char **argv)
 {
@@ -116,11 +158,13 @@ main (int argc, char **argv)
   INSTALL_COMMAND2 (shell->cmdset, chdir);
   INSTALL_COMMAND2 (shell->cmdset, list);
 
-  INSTALL_COMMAND (shell->cmdset, pwd);
-  INSTALL_COMMAND (shell->cmdset, open);
-
   INSTALL_COMMAND2 (shell->cmdset, debug);
   INSTALL_COMMAND2 (shell->cmdset, show_debug);
+
+  INSTALL_COMMAND (shell->cmdset, pwd);
+  INSTALL_COMMAND (shell->cmdset, open);
+  INSTALL_COMMAND2 (shell->cmdset, terminal);
+  INSTALL_COMMAND2 (shell->cmdset, launch_shell);
 
   shell_install (shell, '>', fselect_keyfunc_start);
 
