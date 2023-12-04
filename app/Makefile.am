@@ -2,7 +2,7 @@
 
 AM_CPPFLAGS = -I$(top_srcdir) -I$(top_srcdir)/lib
 
-noinst_PROGRAMS = opensh
+bin_PROGRAMS = opensh
 
 opensh_SOURCES = \
 	opensh.c
