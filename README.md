@@ -1,13 +1,18 @@
-# zcmdsh
+# macos-opensh
 
 ## Overview
 
-A GNU-Zebra/Quagga/FRR-like command-line shell library.
-It comes with the "opensh" as the first example application.
+"macos-opensh" is the first example application of the
+GNU-Zebra/Quagga/FRR-like command-line shell library.
 The "opensh" is a Cisco-like shell for "open"-ing files and directories
 in MacOS. It shows a powerful ability when the name of the
 file or directory is in the multi-byte language, e.g.,
 the Jananese UTF-8 filenames.
+
+"macos-opensh" is a derivative of a proprietary program,
+and in the hope for me to freely dual-licensing the proprietary program,
+(and because I haven't prepared the necessary preparation yet,)
+for now I don't accept pull-requests.
 
 '?' provides a list of command candidates.
 When your shell is in the <FILENAME> command node,
