@@ -14,9 +14,14 @@ and in the hope for me to freely dual-licensing the proprietary program,
 (and because I haven't prepared the necessary preparation yet,)
 for now I don't accept pull-requests.
 
+## License
+
+GPLv3.
+
 ## Installation
 
 - Homebrew's gcc and automake/autoconf are the prerequisites.
+- Below will install the opensh in $HOME/macos/bin/.
 
 ```
 % aclocal
@@ -42,78 +47,81 @@ is expanded in the command line.
 'q' in the file select mode cancels the file select mode.
 
 ```
-[/Users/yasu/devel]> '?'
+yasu@yasuhironets-MBP ~ % ~/macos/bin/opensh
+[/Users/yasu]> <'?'>
   cd               change current working directory.
-  exit             exit
+  chdir            change current working directory.
   pwd              print current working directory.
+  terminal         open a new terminal window.
+  show             show information.
+  exit             exit
+  no               disable command.
+  debug            debug command.
+  vi               edit a file with vi.
+  vim              edit a file with vim.
   quit             quit
   ls               list files in the directory.
-  logout           logout
+  list             list files in the directory.
   open             open.
-[/Users/yasu/devel]> open '?'
+  launch           launch a command.
+  logout           logout
+[/Users/yasu]> cd <'?'>
+  <cr>             change current working directory.
   <FILENAME>       filename
-  path:  dir: . filename: 
-  maxlen: 27 ncol: 2
 
-  simrouting/                  libzcmdsh/                   
-  テストディレクトリ/ 
-[/Users/yasu/devel]> open '>'
-shell_input: inputch: 62/076/0x3e '>'
-key_func: 0x104e3c190, key_func[62]: 0x104e369d4
-[/Users/yasu/devel]> open debug...
-  path:  dir: . filename: 
-
-  path:  dir: . filename: 
-  maxlen: 27 ncol: 2 nentry: 3 index: 0
-
-  simrouting/                  libzcmdsh/                   
-  テストディレクトリ/ 
-shell_input: inputch: 10/012/0xa CONTROL('J')
-key_func: 0x104e3d3a8, key_func[10]: 0x104e36de0
-[/Users/yasu/devel]> open テストディレクトリ/'?'
-shell_input: inputch: 63/077/0x3f '?'
-key_func: 0x104e3c190, key_func[63]: 0x104e35a34
-[/Users/yasu/devel]> open テストディレクトリ/
+  devel/                paper/                Music/
+  nttcom.txt            my-number-card/       macos/
+  Creative Cloud Files/ Pictures/             Desktop/
+  Library/              wish-list.txt         Public/
+  Movies/               Applications/         Documents/
+  memo.txt              game-server/          Downloads/
+  tmp/                  event/                membership/
+  src/
+[/Users/yasu]> cd dev<tab>
+[/Users/yasu]> cd devel/<ret>
+chdir: devel/
+[/Users/yasu/devel]> cd <'?'>
+  <cr>             change current working directory.
   <FILENAME>       filename
-  path: テストディレクトリ/ dir: テストディレクトリ filename: 
-  maxlen: 56 ncol: 1
 
-  ランダム 空白入り日本語ファイル名.pdf  
-
-[/Users/yasu/devel]> open テストディレクトリ/'>'
-shell_input: inputch: 62/076/0x3e '>'
-key_func: 0x104e3c190, key_func[62]: 0x104e369d4
-[/Users/yasu/devel]> open テストディレクトリ/debug...
-  path: テストディレクトリ dir: テストディレクトリ filename: 
-
-  path: テストディレクトリ dir: テストディレクトリ filename: 
-  maxlen: 56 ncol: 1 nentry: 1 index: 0
+  simrouting/                  bgpdump2/
+  macos-opensh/                zcmdsh/
+  テストディレクトリ/
+[/Users/yasu/devel]> cd <'>'>
+ [simrouting/]                 bgpdump2/
+  macos-opensh/                zcmdsh/
+  テストディレクトリ/
+[/Users/yasu/devel]> cd <Ctrl-N>
+  simrouting/                  bgpdump2/
+ [macos-opensh/]               zcmdsh/
+  テストディレクトリ/
+[/Users/yasu/devel]> cd <ret>
+  simrouting/                  bgpdump2/
+  macos-opensh/                zcmdsh/
+ [テストディレクトリ/]
+[/Users/yasu/devel]> cd テストディレクトリ/<ret>
+chdir: テストディレクトリ/
+[/Users/yasu/devel/テストディレクトリ]> ls<ret>
+dir: /Users/yasu/devel/テストディレクトリ/
 
   ランダム 空白入り日本語ファイル名.pdf
 
-
-shell_input: inputch: 10/012/0xa CONTROL('J')
-key_func: 0x104e3d3a8, key_func[10]: 0x104e36de0
-[/Users/yasu/devel]> open テストディレクトリ/ランダム 空白入り日本語ファイル名.pdf
-shell_input: inputch: 10/012/0xa CONTROL('J')
-key_func: 0x104e3c190, key_func[10]: 0x104e35820
-[/Users/yasu/devel]> open テストディレクトリ/ランダム 空白入り日本語ファイル名.pdf
-[/Users/yasu/devel]> 
+[/Users/yasu/devel/テストディレクトリ]> open <'>'>
+ [ランダム 空白入り日本語ファイル名.pdf]
+[/Users/yasu/devel/テストディレクトリ]> open <ret>
+[/Users/yasu/devel/テストディレクトリ]> open ランダム 空白入り日本語ファイル名.pdf<ret>
+(Opens the PDF.)
 ```
 
 ## Known Issues
 
 - Removing the UTF-8 filename backward from the end does not work yet.
   (The shell removes it one-byte at a time in (e.g.,) UTF-8 four encoded bytes.
-- The spaces in directory name is not handled correctly.
+- The spaces in directory names are not handled correctly.
 - The more-than-one spaces in file name is not handled correctly.
   (It is canonicalized as just one space in the command matching process.)
 
 ## TODO
 
-- prepare the GPL license.
-- implement debug shell mode. All noisy debug message should only be
-  output when the debug shell mode is enabled.
 - multi-match in command match process.
-
 
