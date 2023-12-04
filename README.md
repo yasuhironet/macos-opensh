@@ -14,6 +14,21 @@ and in the hope for me to freely dual-licensing the proprietary program,
 (and because I haven't prepared the necessary preparation yet,)
 for now I don't accept pull-requests.
 
+## Installation
+
+- Homebrew's gcc and automake/autoconf are the prerequisites.
+
+```
+% aclocal
+% autoheader
+% automake --add-missing -c
+% autoconf
+% ./configure
+% make && make install
+```
+
+## Usage
+
 '?' provides a list of command candidates.
 When your shell is in the <FILENAME> command node,
 '?' provides a list of file candidates.
