@@ -28,6 +28,20 @@
 #include "shell_fselect.h"
 
 void
+opensh_shell_keyfunc_ctrl_d (struct shell *shell)
+{
+  if (shell->cursor == 0 && shell->end == 0)
+    {
+      (*exit_cmd.cmdfunc) ((void *)shell, 1, (char **)"exit");
+      return;
+    }
+
+  /* Delete one character */
+  if (shell->cursor < shell->end)
+    shell_delete_string (shell, shell->cursor, shell->cursor + 1);
+}
+
+void
 shell_set_prompt_cwd (struct shell *shell)
 {
   char buf[MAXPATHLEN];
@@ -208,6 +222,7 @@ main (int argc, char **argv)
   INSTALL_COMMAND2 (shell->cmdset, edit_vi);
 
   shell_install (shell, '>', fselect_keyfunc_start);
+  shell_install (shell, CONTROL ('D'), opensh_shell_keyfunc_ctrl_d);
 
   termio_init ();
   shell_fselect_init ();
